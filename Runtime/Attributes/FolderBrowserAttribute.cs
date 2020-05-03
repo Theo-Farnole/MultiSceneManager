@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class FolderBrowserAttribute : PropertyAttribute
+namespace TF.SceneManager
 {
-    
+    public class FolderBrowserAttribute : PropertyAttribute
+    {
+
+    }
 }

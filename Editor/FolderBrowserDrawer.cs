@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace TF.SceneManager
+namespace TF.SceneManager.Editor
 {
     [CustomPropertyDrawer(typeof(FolderBrowserAttribute))]
     public class FolderBrowserDrawer : PropertyDrawer
