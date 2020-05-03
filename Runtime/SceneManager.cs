@@ -15,18 +15,22 @@ namespace TF.SceneManager
     public static class SceneManager
     {
         #region Fields
-        public static OnSceneActivation OnSceneActivation;        
-
-        private static SceneManagerData _data;
+        private static bool _allowSceneActivation = false;
 
         private static List<AsyncOperation> _asyncLoad = new List<AsyncOperation>();
         private static List<AsyncOperation> _asyncUnload = new List<AsyncOperation>();
         #endregion
 
         #region Properties
-        public static SceneManagerData Data
+        public static SceneManagerData SceneManagerData { get => SceneManagerData.Instance; }
+
+        public static bool AllowSceneActivation
         {
-            get => SceneManagerData.Instance;
+            get => _allowSceneActivation; set
+            {
+                _allowSceneActivation = value;
+                UpdateAsyncOperation_AllowSceneActivation();
+            }
         }
         #endregion
 
@@ -48,7 +52,6 @@ namespace TF.SceneManager
             LoadSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
         }
 
-
         /// <summary>
         /// Load scene with logic scenes.
         /// </summary>
@@ -57,9 +60,9 @@ namespace TF.SceneManager
         {
             UnityEngine.SceneManagement.SceneManager.LoadScene(level);
 
-            for (int i = 0; i < Data.LogicScenesNames.Length; i++)
+            for (int i = 0; i < SceneManagerData.LogicScenesNames.Length; i++)
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(_data.LogicScenesNames[0], UnityEngine.SceneManagement.LoadSceneMode.Additive);
+                UnityEngine.SceneManagement.SceneManager.LoadScene(SceneManagerData.LogicScenesNames[0], UnityEngine.SceneManagement.LoadSceneMode.Additive);
             }
         }
 
@@ -69,39 +72,33 @@ namespace TF.SceneManager
         /// <param name="level">Level to load</param>
         public static void LoadSceneAsync(string level)
         {
-            // load LEVEL
+            // load 
             UnityEngine.SceneManagement.SceneManager.LoadScene(level);
 
             // async load GAME_LOGIC
             _asyncLoad.Clear();
 
-            for (int i = 0; i < Data.LogicScenesNames.Length; i++)
+            for (int i = 0; i < SceneManagerData.LogicScenesNames.Length; i++)
             {
-                var ao = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_data.LogicScenesNames[0], UnityEngine.SceneManagement.LoadSceneMode.Additive);
+                var ao = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(SceneManagerData.LogicScenesNames[0], UnityEngine.SceneManagement.LoadSceneMode.Additive);
 
                 _asyncLoad.Add(ao);
-                _asyncLoad[i].allowSceneActivation = false;
             }
+
+            UpdateAsyncOperation_AllowSceneActivation();
         }
 
-        /// <summary>
-        /// Allow activation of scenes.
-        /// </summary>
-        public static void AllowScenesActivation()
+        static void UpdateAsyncOperation_AllowSceneActivation()
         {
-            // load scenes
-            for (int i = 0; i < _asyncLoad.Count; i++)
+            foreach (var ao in _asyncLoad)
             {
-                _asyncLoad[i].allowSceneActivation = true;
+                ao.allowSceneActivation = _allowSceneActivation;
             }
 
-            // ... then unload old scenes
-            for (int i = 0; i < _asyncUnload.Count; i++)
+            foreach (var ao in _asyncUnload)
             {
-                _asyncUnload[i].allowSceneActivation = true;
+                ao.allowSceneActivation = _allowSceneActivation;
             }
-
-            OnSceneActivation?.Invoke();
         }
         #endregion
         #endregion

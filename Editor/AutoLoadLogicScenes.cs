@@ -19,13 +19,13 @@ namespace TF.SceneManager.Editor
 
         private static void LoadGameplay(Scene loadedScene, OpenSceneMode mode)
         {
-            bool isLoadedSceneIsGameplay = SceneManager.Data.LogicScenesNames.Contains(loadedScene.name);
+            bool isLoadedSceneIsGameplay = SceneManager.SceneManagerData.LogicScenesNames.Contains(loadedScene.name);
 
             if (isLoadedSceneIsGameplay)
                 return;
 
-            string[] logicScenesNames = SceneManager.Data.LogicScenesNames;
-            string path = SceneManager.Data.ScenePath;
+            string[] logicScenesNames = SceneManager.SceneManagerData.LogicScenesNames;
+            string path = SceneManager.SceneManagerData.ScenePath;
 
             for (int i = 0; i < logicScenesNames.Length; i++)
             {
