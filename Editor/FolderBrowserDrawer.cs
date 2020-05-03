@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using TF.SceneManager;
 
 namespace TF.SceneManager.Editor
 {
