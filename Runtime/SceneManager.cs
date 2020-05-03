@@ -17,7 +17,7 @@ namespace TF.SceneManager
         #region Fields
         public static OnSceneActivation OnSceneActivation;
 
-        private static readonly string DATA_NAME = "SceneManager Data";
+        
 
         private static SceneManagerData _data;
 
@@ -28,33 +28,7 @@ namespace TF.SceneManager
         #region Properties
         public static SceneManagerData Data
         {
-            get
-            {
-                if (_data == null)
-                {
-                    // Load file
-                    Debug.LogFormat("Loading \"{0}\" file from Resources folder...", DATA_NAME);
-                    _data = Resources.Load<SceneManagerData>(DATA_NAME);                    
-
-                    if (_data == null)
-                    {
-#if UNITY_EDITOR
-                        // Create the file if it doesn't exist
-                        _data = ScriptableObject.CreateInstance<SceneManagerData>();
-
-                        AssetDatabase.CreateFolder("Assets", "Resources");
-                        AssetDatabase.CreateAsset(_data, "Assets/Resources/" + DATA_NAME + ".asset");
-                        AssetDatabase.SaveAssets();
-
-                        Debug.LogFormat("Unable to find {0}. Creating it...", DATA_NAME);
-#else
-                        Debug.LogErrorFormat("Loading failed of \"{0}\".. Make sure you have well written Resources folder.", DATA_NAME);
-#endif
-                    }
-                }
-
-                return _data;
-            }
+            get => SceneManagerData.GetOrCreateSceneManagerData();
         }
         #endregion
 
