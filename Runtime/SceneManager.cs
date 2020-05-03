@@ -15,9 +15,7 @@ namespace TF.SceneManager
     public static class SceneManager
     {
         #region Fields
-        public static OnSceneActivation OnSceneActivation;
-
-        
+        public static OnSceneActivation OnSceneActivation;        
 
         private static SceneManagerData _data;
 
@@ -28,7 +26,7 @@ namespace TF.SceneManager
         #region Properties
         public static SceneManagerData Data
         {
-            get => SceneManagerData.GetOrCreateSceneManagerData();
+            get => SceneManagerData.Instance;
         }
         #endregion
 
