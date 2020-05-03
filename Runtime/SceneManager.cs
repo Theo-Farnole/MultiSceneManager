@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnitySceneManager = UnityEngine.SceneManagement;
 
 namespace TF.SceneManager
 {
@@ -41,7 +42,7 @@ namespace TF.SceneManager
         /// </summary>
         public static void ReloadScene()
         {
-            LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+            LoadScene(UnitySceneManager.SceneManager.GetActiveScene().name);
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace TF.SceneManager
         /// </summary>
         public static void ReloadSceneAsync()
         {
-            LoadSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+            LoadSceneAsync(UnitySceneManager.SceneManager.GetActiveScene().name);
         }
 
         /// <summary>
@@ -58,11 +59,11 @@ namespace TF.SceneManager
         /// <param name="level">Level to load</param>
         public static void LoadScene(string level)
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(level);
+            UnitySceneManager.SceneManager.LoadScene(level);
 
             for (int i = 0; i < SceneManagerData.LogicScenesNames.Length; i++)
             {
-                UnityEngine.SceneManagement.SceneManager.LoadScene(SceneManagerData.LogicScenesNames[0], UnityEngine.SceneManagement.LoadSceneMode.Additive);
+                UnitySceneManager.SceneManager.LoadScene(SceneManagerData.LogicScenesNames[0], UnitySceneManager.LoadSceneMode.Additive);
             }
         }
 
@@ -73,15 +74,14 @@ namespace TF.SceneManager
         public static void LoadSceneAsync(string level)
         {
             // load 
-            UnityEngine.SceneManagement.SceneManager.LoadScene(level);
+            UnitySceneManager.SceneManager.LoadScene(level);
 
             // async load GAME_LOGIC
             _asyncLoad.Clear();
 
             for (int i = 0; i < SceneManagerData.LogicScenesNames.Length; i++)
             {
-                var ao = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(SceneManagerData.LogicScenesNames[0], UnityEngine.SceneManagement.LoadSceneMode.Additive);
-
+                var ao = UnitySceneManager.SceneManager.LoadSceneAsync(SceneManagerData.LogicScenesNames[0], UnitySceneManager.LoadSceneMode.Additive);
                 _asyncLoad.Add(ao);
             }
 
