@@ -35,7 +35,7 @@ namespace TF.MultiSceneManager
             if (sceneManagerData == null)
                 CreateSceneManagerData(out sceneManagerData, filename);
 
-            return _instance;
+            return sceneManagerData;
         }
 
         private static void CreateSceneManagerData(out T sceneManagerData, string filename)
@@ -44,6 +44,9 @@ namespace TF.MultiSceneManager
             Debug.LogErrorFormat("No SceneManagerData file founded. Can't create one in Resources.");
             return;
 #else
+
+            Debug.LogFormat("<color=yellow>MultiScene</color> # SceneManager data file has been created at path Assets/Resources/.");
+
             Assert.IsNull(_instance, "Instance should be null while creating manager");
 
             sceneManagerData = ScriptableObject.CreateInstance<T>();
