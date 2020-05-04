@@ -15,7 +15,16 @@ namespace TF.MultiSceneManager.Editor
         {
             Debug.LogFormat("<color=yellow>MultiScene</color> # Automatic loading initalized.");
 
-            EditorSceneManager.sceneOpened += EditorMultiSceneManager.LoadScene;
+            EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
+        }
+
+        private static void EditorSceneManager_sceneOpened(Scene scene, OpenSceneMode mode)
+        {
+            // prevent scene loading twice
+            if (Application.isPlaying)
+                return;
+
+            EditorMultiSceneManager.LoadScene(scene, mode);
         }
     }
 }
