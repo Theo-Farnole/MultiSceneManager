@@ -13,25 +13,9 @@ namespace TF.MultiSceneManager.Editor
     {
         static AutoLoadLogicScenes()
         {
-            EditorSceneManager.sceneOpened += LoadGameplay;
-            Debug.LogFormat("<color=yellow>Auto Load</color> # Plugin initalized...");
-        }
+            Debug.LogFormat("<color=yellow>MultiScene</color> # Automatic loading initalized.");
 
-        private static void LoadGameplay(Scene loadedScene, OpenSceneMode mode)
-        {
-            bool isLoadedSceneIsGameplay = MultiSceneManager.SceneManagerData.LogicScenesNames.Contains(loadedScene.name);
-
-            if (isLoadedSceneIsGameplay)
-                return;
-
-            string[] logicScenesNames = MultiSceneManager.SceneManagerData.LogicScenesNames;
-            string path = MultiSceneManager.SceneManagerData.ScenePath;
-
-            for (int i = 0; i < logicScenesNames.Length; i++)
-            {
-                var logicScene = EditorSceneManager.OpenScene(path + "/" + logicScenesNames[i] + ".unity", OpenSceneMode.Additive);
-                EditorSceneManager.MoveSceneBefore(logicScene, loadedScene);
-            }
+            EditorSceneManager.sceneOpened += EditorMultiSceneManager.LoadScene;
         }
     }
 }

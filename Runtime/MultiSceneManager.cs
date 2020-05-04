@@ -61,9 +61,9 @@ namespace TF.MultiSceneManager
         {
             UnitySceneManager.SceneManager.LoadScene(level);
 
-            for (int i = 0; i < SceneManagerData.LogicScenesNames.Length; i++)
+            for (int i = 0; i < SceneManagerData.AdditionalScenes.Length; i++)
             {
-                UnitySceneManager.SceneManager.LoadScene(SceneManagerData.LogicScenesNames[0], UnitySceneManager.LoadSceneMode.Additive);
+                UnitySceneManager.SceneManager.LoadScene(SceneManagerData.AdditionalScenes[0], UnitySceneManager.LoadSceneMode.Additive);
             }
         }
 
@@ -79,15 +79,17 @@ namespace TF.MultiSceneManager
             // async load GAME_LOGIC
             _asyncLoad.Clear();
 
-            for (int i = 0; i < SceneManagerData.LogicScenesNames.Length; i++)
+            for (int i = 0; i < SceneManagerData.AdditionalScenes.Length; i++)
             {
-                var ao = UnitySceneManager.SceneManager.LoadSceneAsync(SceneManagerData.LogicScenesNames[0], UnitySceneManager.LoadSceneMode.Additive);
+                var ao = UnitySceneManager.SceneManager.LoadSceneAsync(SceneManagerData.AdditionalScenes[0], UnitySceneManager.LoadSceneMode.Additive);
                 _asyncLoad.Add(ao);
             }
 
             UpdateAsyncOperation_AllowSceneActivation();
         }
+        #endregion
 
+        #region Private methods
         static void UpdateAsyncOperation_AllowSceneActivation()
         {
             foreach (var ao in _asyncLoad)
