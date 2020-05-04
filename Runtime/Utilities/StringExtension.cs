@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace TF.SceneManager
+namespace TF.MultiSceneManager
 {
     public static class StringExtension
     {

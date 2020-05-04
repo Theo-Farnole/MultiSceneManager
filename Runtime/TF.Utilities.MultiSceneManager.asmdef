@@ -1,5 +1,5 @@
 {
-    "name": "TF.Utilities.SceneManager",
+    "name": "TF.Utilities.MultiSceneManager",
     "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [],

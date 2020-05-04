@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace TF.SceneManager.Editor
+namespace TF.MultiSceneManager.Editor
 {
     [InitializeOnLoad]
     class AutoLoadLogicScenes
@@ -19,13 +19,13 @@ namespace TF.SceneManager.Editor
 
         private static void LoadGameplay(Scene loadedScene, OpenSceneMode mode)
         {
-            bool isLoadedSceneIsGameplay = SceneManager.SceneManagerData.LogicScenesNames.Contains(loadedScene.name);
+            bool isLoadedSceneIsGameplay = MultiSceneManager.SceneManagerData.LogicScenesNames.Contains(loadedScene.name);
 
             if (isLoadedSceneIsGameplay)
                 return;
 
-            string[] logicScenesNames = SceneManager.SceneManagerData.LogicScenesNames;
-            string path = SceneManager.SceneManagerData.ScenePath;
+            string[] logicScenesNames = MultiSceneManager.SceneManagerData.LogicScenesNames;
+            string path = MultiSceneManager.SceneManagerData.ScenePath;
 
             for (int i = 0; i < logicScenesNames.Length; i++)
             {

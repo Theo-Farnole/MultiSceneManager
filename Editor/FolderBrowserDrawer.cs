@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using TF.SceneManager;
+using TF.MultiSceneManager;
 
-namespace TF.SceneManager.Editor
+namespace TF.MultiSceneManager.Editor
 {
     [CustomPropertyDrawer(typeof(FolderBrowserAttribute))]
     public class FolderBrowserDrawer : PropertyDrawer

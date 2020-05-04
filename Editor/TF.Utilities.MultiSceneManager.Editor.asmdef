@@ -1,5 +1,5 @@
 {
-    "name": "TF.Utilities.SceneManager.Editor",
+    "name": "TF.Utilities.MultiSceneManager.Editor",
     "references": [
         "GUID:34a9d95a51e3edf43b021718c6e3eb08"
     ],

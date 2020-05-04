@@ -6,14 +6,14 @@ using UnityEngine;
 using UnityEditor;
 using UnitySceneManager = UnityEngine.SceneManagement;
 
-namespace TF.SceneManager
+namespace TF.MultiSceneManager
 {
     public delegate void OnSceneActivation();
 
     /// <summary>
     /// SceneManager that load scene w/ logics scenes.
     /// </summary>
-    public static class SceneManager
+    public static class MultiSceneManager
     {
         #region Fields
         private static bool _allowSceneActivation = false;
@@ -23,7 +23,7 @@ namespace TF.SceneManager
         #endregion
 
         #region Properties
-        public static SceneManagerData SceneManagerData { get => SceneManagerData.Instance; }
+        public static MultiSceneManagerData SceneManagerData { get => MultiSceneManagerData.Instance; }
 
         public static bool AllowSceneActivation
         {

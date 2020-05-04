@@ -7,9 +7,9 @@ using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.Scripting;
 
-namespace TF.SceneManager
+namespace TF.MultiSceneManager
 {
-    public class SceneManagerData : SingletonScriptableObject<SceneManagerData>, IPreprocessBuildWithReport
+    public class MultiSceneManagerData : SingletonScriptableObject<MultiSceneManagerData>, IPreprocessBuildWithReport
     {
         #region Fields
         [SerializeField, FolderBrowser] private string _scenePath = "Assets/Scenes/";
