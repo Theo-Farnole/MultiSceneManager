@@ -23,8 +23,6 @@ namespace TF.MultiSceneManager
         #endregion
 
         #region Properties
-        public static MultiSceneManagerData SceneManagerData { get => MultiSceneManagerData.Instance; }
-
         public static bool AllowSceneActivation
         {
             get => _allowSceneActivation; set
@@ -56,40 +54,57 @@ namespace TF.MultiSceneManager
         /// <summary>
         /// Load scene with logic scenes.
         /// </summary>
-        /// <param name="level">Level to load</param>
-        public static void LoadScene(string level)
+        /// <param name="masterScene">Level to load</param>
+        public static void LoadScene(string masterScene)
         {
-            UnitySceneManager.SceneManager.LoadScene(level);
+            UnitySceneManager.SceneManager.LoadScene(masterScene);
 
-            for (int i = 0; i < SceneManagerData.AdditionalScenes.Length; i++)
+            var additionalScenes = MultiSceneManagerData.Instance.GetSceneNeeds(masterScene);
+
+            foreach (var additionalScene in additionalScenes)
             {
-                UnitySceneManager.SceneManager.LoadScene(SceneManagerData.AdditionalScenes[0], UnitySceneManager.LoadSceneMode.Additive);
+                UnitySceneManager.SceneManager.LoadScene(additionalScene, UnitySceneManager.LoadSceneMode.Additive);
             }
         }
 
         /// <summary>
         /// Load scene with logic scenes asynchronously.
         /// </summary>
-        /// <param name="level">Level to load</param>
-        public static void LoadSceneAsync(string level)
+        /// <param name="masterScene">Level to load</param>
+        public static void LoadSceneAsync(string masterScene)
         {
-            // load 
-            UnitySceneManager.SceneManager.LoadScene(level);
-
-            // async load GAME_LOGIC
+            // load master scene
+            UnitySceneManager.SceneManager.LoadScene(masterScene);
+            
             _asyncLoad.Clear();
+            var additionalScenes = MultiSceneManagerData.Instance.GetSceneNeeds(masterScene);
 
-            for (int i = 0; i < SceneManagerData.AdditionalScenes.Length; i++)
+            // load additional scenes
+            foreach (var additionalScene in additionalScenes)
             {
-                var ao = UnitySceneManager.SceneManager.LoadSceneAsync(SceneManagerData.AdditionalScenes[0], UnitySceneManager.LoadSceneMode.Additive);
-                _asyncLoad.Add(ao);
+                AsyncOperation ao = UnitySceneManager.SceneManager.LoadSceneAsync(additionalScene, UnitySceneManager.LoadSceneMode.Additive);
+                _asyncLoad.Add(ao); // keep reference to modify "allowSceneActivation"
             }
 
             UpdateAsyncOperation_AllowSceneActivation();
         }
+
+        public static bool IsSceneLoad(string sceneToCheck)
+        {
+            // browse loaded scene
+            for (int i = 0; i < UnitySceneManager.SceneManager.sceneCount; i++)
+            {
+                var loadedScene = UnitySceneManager.SceneManager.GetSceneAt(i);
+                
+                if (loadedScene.name == sceneToCheck)
+                    return true;
+            }
+
+            return false;
+        }
         #endregion
 
-        #region Private methods
+        #region Private methods        
         static void UpdateAsyncOperation_AllowSceneActivation()
         {
             foreach (var ao in _asyncLoad)

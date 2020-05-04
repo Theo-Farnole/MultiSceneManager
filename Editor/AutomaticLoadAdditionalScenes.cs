@@ -9,9 +9,9 @@ using UnityEngine.SceneManagement;
 namespace TF.MultiSceneManager.Editor
 {
     [InitializeOnLoad]
-    class AutoLoadLogicScenes
+    class AutomaticLoadAdditionalScenes
     {
-        static AutoLoadLogicScenes()
+        static AutomaticLoadAdditionalScenes()
         {
             Debug.LogFormat("<color=yellow>MultiScene</color> # Automatic loading initalized.");
 

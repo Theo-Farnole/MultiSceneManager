@@ -28,7 +28,10 @@ namespace TF.MultiSceneManager
 
         void SceneAssetToName()
         {
-            _sceneToLoadName = _sceneToLoad.name;
+            if (_sceneToLoad != null)
+            {
+                _sceneToLoadName = _sceneToLoad.name;
+            }
         }
 #endif
     }
