@@ -30,36 +30,40 @@ namespace TF.MultiSceneManager
         /// </summary>
         public string[] GetSceneNeeds(string sceneToLoad)
         {
-            var correspondingRules = _rules.Where(x => x.master.sceneName == sceneToLoad);
+            SceneRule[] correspondingRules = _rules.Where(x => x.master.sceneName == sceneToLoad).ToArray();
 
             List<string> output = new List<string>(0);
-            
+
             // warning, the following functions are not optimized.
             // we could use only one foreach loop (that could be a for loop)
             // however, this code is rarely accessed in game and that's more maintanable
-            
-            ThrowRulesColliding(sceneToLoad, correspondingRules);
+
+            ThrowErrorIfRulesColliding(sceneToLoad, correspondingRules);
 
             AddDefaultAdditionalScene(correspondingRules, ref output);
 
             AddAdditionalScenesFromRule(correspondingRules, ref output);
-
-            foreach (var o in output)
-                Debug.Log(o);
 
             return output.ToArray();
         }
         #endregion
 
         #region Private methods
-        private void AddDefaultAdditionalScene(IEnumerable<SceneRule> correspondingRules, ref List<string> output)
+        private void AddDefaultAdditionalScene(SceneRule[] correspondingRules, ref List<string> output)
         {
-            foreach (var rule in correspondingRules)
+            if (correspondingRules == null || correspondingRules.Length == 0)
             {
-                if (!rule.dontIncludeDefaultAdditionalScenes)
+                output.AddRange(_defaultAdditionalScenes);
+            }
+            else
+            {
+                foreach (var rule in correspondingRules)
                 {
-                    output.AddRange(_defaultAdditionalScenes);
-                    continue;
+                    if (!rule.dontIncludeDefaultAdditionalScenes)
+                    {
+                        output.AddRange(_defaultAdditionalScenes);
+                        continue;
+                    }
                 }
             }
         }
@@ -78,7 +82,7 @@ namespace TF.MultiSceneManager
         /// <param name="sceneToLoad"></param>
         /// <param name="correspondingRules"></param>
         /// <returns></returns>
-        private static bool ThrowRulesColliding(string sceneToLoad, IEnumerable<SceneRule> correspondingRules)
+        private static bool ThrowErrorIfRulesColliding(string sceneToLoad, IEnumerable<SceneRule> correspondingRules)
         {
             SceneRule previousRule = null;
 
