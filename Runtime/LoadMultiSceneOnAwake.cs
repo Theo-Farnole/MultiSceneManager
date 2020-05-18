@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
-using UnityEngine;
+#endif
 
 namespace TF.MultiSceneManager
 {
-    public class LoadMultiSceneOnAwake : MonoBehaviour, IPreprocessBuildWithReport
+    public class LoadMultiSceneOnAwake : MonoBehaviour
+#if UNITY_EDITOR
+        , IPreprocessBuildWithReport
+#endif
     {
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.SceneAsset _sceneToLoad;
@@ -14,7 +20,6 @@ namespace TF.MultiSceneManager
 
         [SerializeField, HideInInspector] private string _sceneToLoadName;
 
-        int IOrderedCallback.callbackOrder => throw new System.NotImplementedException();
 
         void Awake()
         {
@@ -24,6 +29,7 @@ namespace TF.MultiSceneManager
 #if UNITY_EDITOR
         void OnValidate() => SceneAssetToName();
 
+        int IOrderedCallback.callbackOrder => 1;
         void IPreprocessBuildWithReport.OnPreprocessBuild(BuildReport report) => SceneAssetToName();
 
         void SceneAssetToName()

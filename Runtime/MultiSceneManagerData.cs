@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Build;
-using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.Scripting;
+#if UNITY_EDITOR
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
+#endif
 
 namespace TF.MultiSceneManager
 {
-    public class MultiSceneManagerData : SingletonScriptableObject<MultiSceneManagerData>, IPreprocessBuildWithReport
+    public class MultiSceneManagerData : SingletonScriptableObject<MultiSceneManagerData>
+#if UNITY_EDITOR
+        , IPreprocessBuildWithReport
+#endif
     {
         #region Fields
 #if UNITY_EDITOR
@@ -25,8 +30,8 @@ namespace TF.MultiSceneManager
         #region Methods
         public bool IsSceneAdditional(string sceneName)
         {
-            bool isDefaultAdditional = _defaultAddionalScenesAssets.
-                Any(x => x.name == sceneName);
+            bool isDefaultAdditional = _defaultAdditionalScenes.
+                Any(x => x == sceneName);
 
             bool isRulesAdditionals = _rules
                 .Any(x => x.additionalScenes

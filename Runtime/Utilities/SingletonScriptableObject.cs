@@ -41,7 +41,8 @@ namespace TF.MultiSceneManager
         private static void CreateSceneManagerData(out T sceneManagerData, string filename)
         {
 #if !UNITY_EDITOR
-            Debug.LogErrorFormat("No SceneManagerData file founded. Can't create one in Resources.");
+            sceneManagerData = null;
+            Debug.LogErrorFormat("No SceneManagerData file founded. Can't create one in Resources because we are in a build.");
             return;
 #else
 
