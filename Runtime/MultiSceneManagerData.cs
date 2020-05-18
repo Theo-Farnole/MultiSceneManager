@@ -23,6 +23,18 @@ namespace TF.MultiSceneManager
         #endregion
 
         #region Methods
+        public bool IsSceneAdditional(string sceneName)
+        {
+            bool isDefaultAdditional = _defaultAddionalScenesAssets.
+                Any(x => x.name == sceneName);
+
+            bool isRulesAdditionals = _rules
+                .Any(x => x.additionalScenes
+                .Any(y => y.sceneName == sceneName));
+
+            return isDefaultAdditional || isRulesAdditionals;
+        }
+
         #region Get Scene Needs
         #region Public Methods
         /// <summary>

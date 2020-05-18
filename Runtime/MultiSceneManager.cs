@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnitySceneManager = UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 
 namespace TF.MultiSceneManager
 {
@@ -57,13 +58,27 @@ namespace TF.MultiSceneManager
         /// <param name="masterScene">Level to load</param>
         public static void LoadScene(string masterScene)
         {
-            UnitySceneManager.SceneManager.LoadScene(masterScene);
-
             var additionalScenes = MultiSceneManagerData.Instance.GetSceneNeeds(masterScene);
 
-            foreach (var additionalScene in additionalScenes)
+            if (additionalScenes.Length > 0)
             {
-                UnitySceneManager.SceneManager.LoadScene(additionalScene, UnitySceneManager.LoadSceneMode.Additive);
+                SceneManager.LoadScene(additionalScenes[0]);
+
+                for (int i = 1; i < additionalScenes.Length; i++)
+                {
+                    var additionalScene = additionalScenes[i];
+                    SceneManager.LoadScene(additionalScene, LoadSceneMode.Additive);
+                }
+
+                // load masterScene at the end
+                // to let managers be created first
+                SceneManager.LoadScene(masterScene, LoadSceneMode.Additive);
+            }
+            else
+            {
+                // the scene has no additional
+                // just load it
+                SceneManager.LoadScene(masterScene);
             }
         }
 
@@ -71,11 +86,12 @@ namespace TF.MultiSceneManager
         /// Load scene with logic scenes asynchronously.
         /// </summary>
         /// <param name="masterScene">Level to load</param>
+        [Obsolete("This method must be updated. Please use LoadScene instead.")]
         public static void LoadSceneAsync(string masterScene)
         {
             // load master scene
             UnitySceneManager.SceneManager.LoadScene(masterScene);
-            
+
             _asyncLoad.Clear();
             var additionalScenes = MultiSceneManagerData.Instance.GetSceneNeeds(masterScene);
 
@@ -95,7 +111,7 @@ namespace TF.MultiSceneManager
             for (int i = 0; i < UnitySceneManager.SceneManager.sceneCount; i++)
             {
                 var loadedScene = UnitySceneManager.SceneManager.GetSceneAt(i);
-                
+
                 if (loadedScene.name == sceneToCheck)
                     return true;
             }

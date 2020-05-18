@@ -25,11 +25,12 @@ public static class EditorMultiSceneManager
             if (GetScenePath(additionalSceneName, out string scenePath))
             {
                 // loading scene
-                EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
+                var openedScene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
+                SceneManager.SetActiveScene(openedScene);
             }
         }
 
-                // set master scene at the end of the scenes list
+        // set master scene at the end of the scenes list
         MoveSceneAtTheEnd(masterScene);
     }
 
@@ -42,7 +43,7 @@ public static class EditorMultiSceneManager
     {
         int sceneCount = EditorSceneManager.sceneCount;
 
-        return EditorSceneManager.GetSceneAt(sceneCount-1);
+        return EditorSceneManager.GetSceneAt(sceneCount - 1);
     }
 
     public static bool IsSceneLoaded(string sceneToCheck)
