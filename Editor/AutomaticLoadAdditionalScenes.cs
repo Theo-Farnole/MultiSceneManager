@@ -24,8 +24,13 @@ namespace TF.MultiSceneManager.Editor
             Debug.LogFormat("<color=yellow>MultiScene</color> # Automatic loading initalized.");
 
             EditorSceneManager.sceneOpened += EditorSceneManager_sceneOpened;
+            EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
         }
 
+        private static void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
+        {
+            MultiSceneManager.SetFirstAdditionalSceneAsActive();
+        }
 
         private static void EditorSceneManager_sceneOpened(Scene scene, OpenSceneMode mode)
         {

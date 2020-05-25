@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditor;
 using UnitySceneManager = UnityEngine.SceneManagement;
 using UnityEngine.SceneManagement;
+using UnityEngine.Assertions;
 
 namespace TF.MultiSceneManager
 {
@@ -17,6 +18,8 @@ namespace TF.MultiSceneManager
     public static class MultiSceneManager
     {
         #region Fields
+        private readonly static string debugLogHeader = "<color=yellow>Multi Scene Manager</color> : ";
+
         private static bool _allowSceneActivation = false;
 
         private static List<AsyncOperation> _asyncLoad = new List<AsyncOperation>();
@@ -50,6 +53,30 @@ namespace TF.MultiSceneManager
         public static void ReloadSceneAsync()
         {
             LoadSceneAsync(UnitySceneManager.SceneManager.GetActiveScene().name);
+        }
+
+
+        public static void SetFirstAdditionalSceneAsActive()
+        {
+            var additionalScenes = MultiSceneManagerData.Instance.DefaultAdditionalScenes;
+
+            Assert.IsTrue(additionalScenes.Length >= 1, debugLogHeader + "Additional scenes is empty. Can't set first additional scene as active.");
+
+            string firstAdditionalScene = additionalScenes[0];
+
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene currentScene = SceneManager.GetSceneAt(i);
+                string currentSceneName = currentScene.name;
+
+                if (currentSceneName == firstAdditionalScene)
+                {
+                    SceneManager.SetActiveScene(currentScene);
+                    Debug.LogFormat(debugLogHeader + "Set first additional scene '{0}' as active.", currentSceneName);
+                    return;
+                }
+            }
+            Debug.LogWarningFormat(debugLogHeader + "Could find a scene named '{0}'. No scene has been set as active.", firstAdditionalScene);
         }
 
         /// <summary>

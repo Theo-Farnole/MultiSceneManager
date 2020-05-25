@@ -27,6 +27,10 @@ namespace TF.MultiSceneManager
         [SerializeField, HideInInspector] private string[] _defaultAdditionalScenes = new string[0];
         #endregion
 
+        #region Properties
+        public string[] DefaultAdditionalScenes { get => _defaultAdditionalScenes; }
+        #endregion
+
         #region Methods
         public bool IsSceneAdditional(string sceneName)
         {
@@ -122,6 +126,8 @@ namespace TF.MultiSceneManager
         #region SceneAssets to scenes' name
 #if UNITY_EDITOR
         public int callbackOrder => 0;
+
+        public SceneAsset[] DefaultAddionalScenesAssets { get => _defaultAddionalScenesAssets; set => _defaultAddionalScenesAssets = value; }
 
         public void OnPreprocessBuild(BuildReport report)
         {
