@@ -76,7 +76,27 @@ namespace TF.MultiSceneManager
                     return;
                 }
             }
+
             Debug.LogWarningFormat(debugLogHeader + "Could find a scene named '{0}'. No scene has been set as active.", firstAdditionalScene);
+        }
+
+        public static void SetMasterSceneAsActive()
+        {
+            var additionalScenes = MultiSceneManagerData.Instance.DefaultAdditionalScenes;
+
+            for (int i = 0; i < SceneManager.sceneCount; i++)
+            {
+                Scene currentScene = SceneManager.GetSceneAt(i);
+                string currentSceneName = currentScene.name;
+
+                bool isCurrentSceneInAdditionalScenes = additionalScenes.Contains(currentSceneName);
+
+                if (!isCurrentSceneInAdditionalScenes)
+                {
+                    SceneManager.SetActiveScene(currentScene);
+                    return;
+                }
+            }
         }
 
         /// <summary>
