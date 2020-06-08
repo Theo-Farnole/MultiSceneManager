@@ -29,7 +29,18 @@ namespace TF.MultiSceneManager.Editor
 
         private static void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
         {
-            MultiSceneManager.SetFirstAdditionalSceneAsActive();
+            switch (obj)
+            {
+                case PlayModeStateChange.ExitingEditMode:
+                case PlayModeStateChange.EnteredPlayMode:
+                    MultiSceneManager.SetFirstAdditionalSceneAsActive();
+                    break;
+
+                case PlayModeStateChange.EnteredEditMode:
+                case PlayModeStateChange.ExitingPlayMode:
+                    MultiSceneManager.SetMasterSceneAsActive();
+                    break;
+            }
         }
 
         private static void EditorSceneManager_sceneOpened(Scene scene, OpenSceneMode mode)

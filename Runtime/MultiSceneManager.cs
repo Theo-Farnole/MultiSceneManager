@@ -91,9 +91,11 @@ namespace TF.MultiSceneManager
 
                 bool isCurrentSceneInAdditionalScenes = additionalScenes.Contains(currentSceneName);
 
+                // if it's not a additional scenes, it's a master scene
                 if (!isCurrentSceneInAdditionalScenes)
                 {
                     SceneManager.SetActiveScene(currentScene);
+                    Debug.LogFormat(debugLogHeader + "Set master scene '{0}' as active.", currentSceneName);
                     return;
                 }
             }

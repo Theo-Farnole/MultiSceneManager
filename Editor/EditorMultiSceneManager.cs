@@ -26,9 +26,10 @@ public static class EditorMultiSceneManager
             {
                 // loading scene
                 var openedScene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
-                SceneManager.SetActiveScene(openedScene);
             }
         }
+
+        SceneManager.SetActiveScene(masterScene);
 
         // set master scene at the end of the scenes list
         MoveSceneAtTheEnd(masterScene);
